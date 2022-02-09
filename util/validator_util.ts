@@ -34,6 +34,14 @@ export class Constraint{
         return new Constraint(name, required, type, validator)
     } 
 
+    public static ofString(name:string, required: boolean, minLength: number, maxLength: number): Constraint{
+        return new Constraint(name, required, 'string', (param: string) => {return param.length >= minLength && param.length <= maxLength})
+    }
+
+    public static ofNumber(name:string, required: boolean, min: number, max: number): Constraint{
+        return new Constraint(name, required, 'number', (param: number) => {return param >= min && param <= max})
+    }
+
 }
 
 export function isValidateParams(constraints: Array<Constraint>, target: any, {response}: {response: any}): boolean {
@@ -41,7 +49,7 @@ export function isValidateParams(constraints: Array<Constraint>, target: any, {r
         let param = target[constraint.getName()];
         
         if (param === undefined && constraint.isRequired()){
-            response.status = 400;
+            response.status = BAD_REQUEST;
             response.body = ResponseModel.error(40000, `Missing Parameter ${constraint.getName()}`);
             return false;
         }

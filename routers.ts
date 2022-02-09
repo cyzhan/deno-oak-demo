@@ -1,4 +1,5 @@
 import { Router } from "https://deno.land/x/oak/mod.ts"
+import systemHandler from "./handler/system_handler.ts";
 import userHandler from "./handler/user_handler.ts"
 import jwt from "./util/jwt_util.ts"
 
@@ -13,6 +14,8 @@ router.get("/rbmq-demo/users", userHandler.getUsers)
     .patch('/rbmq-demo/user/password', jwt.verify, userHandler.patchPassword)
     .get("/rbmq-demo/user/test/1", userHandler.test)
     .get("/rbmq-demo/system/version", userHandler.getVersion)
+    .get("/rbmq-demo/system/cache", systemHandler.getCache)
+    .put("/rbmq-demo/system/cache", systemHandler.putCache)
     
 
 export default router;  

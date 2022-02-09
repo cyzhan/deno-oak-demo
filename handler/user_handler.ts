@@ -1,5 +1,6 @@
 import { helpers } from "https://deno.land/x/oak/mod.ts";
 import { createHash } from "https://deno.land/std/hash/mod.ts"
+// import { crypto } from "https://deno.land/std@0.125.0/crypto/mod.ts"
 import { isValidateParams, getPage, Constraint } from "../util/validator_util.ts";
 import { ResponseModel } from "../common/commonModel.ts";
 import userDao from "../dao/user_dao.ts";
@@ -45,7 +46,9 @@ const userHandler = {
             return;
         }
         
-        const beforeMD5Str = `${requestBody.password}:${config().LOGIN_PASSWORD_SALT}`  
+        const beforeMD5Str = `${requestBody.password}:${config().LOGIN_PASSWORD_SALT}`
+        console.log(`beforeMD5Str = ${requestBody.password}:${config().LOGIN_PASSWORD_SALT}`);
+          
         requestBody.password = createHash("md5").update(beforeMD5Str).toString();
         const rs = await userDao.register(requestBody)
         console.log(`affectedRows = ${rs.affectedRows}, lastInsertId = ${rs.lastInsertId}`)

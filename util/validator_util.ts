@@ -49,7 +49,7 @@ export function isValidateParams(constraints: Array<Constraint>, target: any, {r
         let param = target[constraint.getName()];
         
         if (param === undefined && constraint.isRequired()){
-            response.status = BAD_REQUEST;
+            response.status = 400;
             response.body = ResponseModel.error(40000, `Missing Parameter ${constraint.getName()}`);
             return false;
         }
